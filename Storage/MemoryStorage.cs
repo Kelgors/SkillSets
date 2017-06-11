@@ -19,6 +19,11 @@ namespace AutoSkill.Storage
 			Memory = new Dictionary<ulong, string>();
 		}
 
+		/// <summary>
+		/// Useless in a case of memory storage
+		/// </summary>
+		public void PeriodicSave() {}
+
 		public bool Save(CSteamID steamId, string skillSetName, bool enabled)
 		{
 			if (enabled)

@@ -10,12 +10,17 @@ namespace AutoSkill
 		/// The type of the storage (none|file)
 		/// </summary>
         public string StorageType;
+
 		/// <summary>
 		/// The file path (only if StorageType == file)
 		/// </summary>
         public string FilePath;
 
-		public int PeriodicSave;
+		/// <summary>
+		/// The periodic save (in milliseconds)
+		/// Actually only used if StorageType == file
+		/// </summary>
+		public uint PeriodicSave;
 
 		[XmlArrayItem(ElementName = "SkillSet")]
 		public List<Configuration_SkillSet> SkillSets;

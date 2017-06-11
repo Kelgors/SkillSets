@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Rocket.API;
 using Rocket.API.Collections;
+using Rocket.Core.Logging;
+using Rocket.Core.Plugins;
 using Rocket.Unturned;
 using Rocket.Unturned.Events;
 using Rocket.Unturned.Player;
@@ -9,7 +13,7 @@ using AutoSkill.Utils;
 
 namespace AutoSkill
 {
-	public class AutoSkillPlugin : Rocket.Core.Plugins.RocketPlugin<AutoSkillConfiguration>
+	public class AutoSkillPlugin : RocketPlugin<AutoSkillConfiguration>
 	{
 
 		public static string WrapLog(string message)
@@ -21,6 +25,9 @@ namespace AutoSkill
 		public List<SkillSet> SkillSets;
 		public SkillSet DefaultSkillSet;
 		IAutoSkillStorage Storage;
+		internal DateTime LastPeriodicSave;
+		internal bool PeriodicSaveEnabled = false;
+		internal uint PeriodicSaveMs;
 
 		public IAutoSkillStorage GetStorage()
 		{
@@ -30,15 +37,65 @@ namespace AutoSkill
 		protected override void Load()
 		{
 			Instance = this;
+
+			LoadPeriodicSave();
 			ReflectConfigurationSkills();
 			Storage = CreateStorage();
 			Storage.Load();
+
 			U.Events.OnPlayerConnected += U_Events_OnPlayerConnected;
 			UnturnedPlayerEvents.OnPlayerRevive += UnturnedPlayerEvents_OnPlayerRevive;
 		}
 
+		internal void LoadPeriodicSave()
+		{
+			PeriodicSaveEnabled = Configuration.Instance.PeriodicSave > 0;
+			LastPeriodicSave = DateTime.UtcNow;
+			if (PeriodicSaveEnabled)
+			{
+				PeriodicSaveMs = Configuration.Instance.PeriodicSave;
+				if (Configuration.Instance.PeriodicSave < 5000)
+				{
+					Logger.LogWarning(WrapLog("WARNING: <PeriodicSave> is set under 5000ms. PeriodicSave will be disabled."));
+					PeriodicSaveEnabled = false;
+				}
+				else
+				{
+					Logger.LogWarning(WrapLog(string.Format("PeriodicSave enabled : {0}ms", PeriodicSaveMs)));
+				}
+			}
+			else
+			{
+				Logger.LogWarning(WrapLog("PeriodicSave disabled"));
+			}
+		}
+
+		public void FixedUpdate()
+		{
+			if (!PeriodicSaveEnabled || State != PluginState.Loaded) return;
+			CheckPeriodicSave(DateTime.UtcNow);
+		}
+
+		internal void CheckPeriodicSave(DateTime now) 
+		{
+			if ((now - LastPeriodicSave).TotalMilliseconds < Configuration.Instance.PeriodicSave) return;
+			try
+			{
+				GetStorage().PeriodicSave();
+			}
+			catch (Exception ex)
+			{
+				Logger.LogError(WrapLog("An error occured during PeriodicSave. Please check the value in <PeriodicSave> is in milliseconds and the path/permissions to the file is correct"));
+				Logger.LogException(ex);
+			}
+			finally
+			{
+				LastPeriodicSave = now;
+			}
+		}
+
 		internal void ReflectConfigurationSkills() {
-			SkillSets = Instance.Configuration.Instance.SkillSets.Select((confSkillSet) => SkillSet.FromConfigurationSkillSet(confSkillSet)).ToList();
+			SkillSets = Configuration.Instance.SkillSets.Select((confSkillSet) => SkillSet.FromConfigurationSkillSet(confSkillSet)).ToList();
 			DefaultSkillSet = SkillSets.Find((skillSet) => skillSet.IsDefault);
 		}
 
@@ -48,14 +105,14 @@ namespace AutoSkill
 		/// <returns>The storage instance</returns>
 		private IAutoSkillStorage CreateStorage()
 		{
-			switch (Instance.Configuration.Instance.StorageType)
+			switch (Configuration.Instance.StorageType)
 			{
 				case "memory":
 					return new MemoryStorage();
 				case "file":
 					return new FileStorage();
 			}
-			throw new System.Exception(WrapLog(string.Format("Unknown StorageType \"{0}\"", Instance.Configuration.Instance.StorageType)));
+			throw new Exception(WrapLog(string.Format("Unknown <StorageType> \"{0}\"", Configuration.Instance.StorageType)));
 		}
 
 		protected override void Unload()

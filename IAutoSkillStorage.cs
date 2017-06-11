@@ -26,6 +26,12 @@ namespace AutoSkill
         bool Save(CSteamID steamId, string skillSetName, bool enabled);
 
 		/// <summary>
+		/// Save Periodically the storage.
+		/// Avoid to let the player decide when the storage will be written on disk
+		/// </summary>
+		void PeriodicSave();
+
+		/// <summary>
 		/// Get if the specified steamId skills should be maxed or not
 		/// </summary>
 		/// <returns>The name of the SkillSet</returns>

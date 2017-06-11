@@ -8,9 +8,9 @@
 
 `StorageType` : "memory" or "file" (if none, all players will be skilled to the max value by default)
 
-`FilePath` : The file path (only in file storage type)
+`FilePath` : The file path (only used if StorageType == file)
 
-`PeriodicSave` : Interval between saves in ms (not used right know) 
+`PeriodicSave` : Interval between saves in ms (only used if StorageType == file). Will be used later for mysql to batch insertions
 
 ##### SkillSet
 
@@ -35,7 +35,7 @@
       <PermissionGroup />
       <Default>true</Default>
       <Skills>
-        <Skill Name="Agriculture" Level="7" />
+		<Skill Name="Agriculture" Level="7" />
 		<Skill Name="Cardio" Level="5" />
 		<Skill Name="Cooking" Level="3" />
 		<Skill Name="Crafting" Level="3" />
