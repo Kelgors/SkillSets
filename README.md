@@ -35,23 +35,28 @@
       <PermissionGroup />
       <Default>true</Default>
       <Skills>
-        <Skill Name="Cardio" Level="5" />
-        <Skill Name="Dexerity" Level="5" />
-        <Skill Name="Diving" Level="5" />
-        <Skill Name="Exercise" Level="5" />
-        <Skill Name="Healing" Level="7" />
-        <Skill Name="Immunity" Level="5" />
-        <Skill Name="Outdoors" Level="5" />
-        <Skill Name="Overkill" Level="7" />
-        <Skill Name="Parkour" Level="5" />
-        <Skill Name="Sharpshooter" Level="7" />
-        <Skill Name="Sneakybeaky" Level="7" />
-        <Skill Name="Strength" Level="5" />
-        <Skill Name="Survival" Level="5" />
-        <Skill Name="Toughness" Level="5" />
-        <Skill Name="Vitality" Level="5" />
-        <Skill Name="Warmblooded" Level="5" />
-      </Skills>
+        <Skill Name="Agriculture" Level="7" />
+		<Skill Name="Cardio" Level="5" />
+		<Skill Name="Cooking" Level="3" />
+		<Skill Name="Crafting" Level="3" />
+		<Skill Name="Dexerity" Level="5" />
+		<Skill Name="Diving" Level="5" />
+		<Skill Name="Engineer" Level="3" />
+		<Skill Name="Exercise" Level="5" />
+		<Skill Name="Fishing" Level="5" />
+		<Skill Name="Healing" Level="7" />
+		<Skill Name="Immunity" Level="5" />
+		<Skill Name="Mechanic" Level="5" />
+		<Skill Name="Outdoors" Level="5" />
+		<Skill Name="Overkill" Level="7" />
+		<Skill Name="Parkour" Level="5" />
+		<Skill Name="Sharpshooter" Level="7" />
+		<Skill Name="Sneakybeaky" Level="7" />
+		<Skill Name="Strength" Level="5" />
+		<Skill Name="Survival" Level="5" />
+		<Skill Name="Toughness" Level="5" />
+		<Skill Name="Vitality" Level="5" />
+		<Skill Name="Warmblooded" Level="5" />
     </SkillSet>
   </SkillSets>
 </AutoSkillConfiguration>
@@ -64,8 +69,9 @@
 <Translations xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Translation Id="PERMISSION_MISSING" Value="Missing permission" />
   <Translation Id="UNKNOWN_COMMAND" Value="Unknown command &quot;{0}&quot;" />
-  <Translation Id="SETMAXSKILL_DONE" Value="Skills set to maximum" />
-  <Translation Id="SETAUTOSKILL_ON" Value="Your skills will be maxed even if you die (I hope not)" />
-  <Translation Id="SETAUTOSKILL_OFF" Value="Your skills will no longer be maxed after death automatically" />
+  <Translation Id="SETMAXSKILL_DONE" Value="Skillset applied" />
+  <Translation Id="SETAUTOSKILL_ON" Value="Your skills will be set even if you die (I hope not)" />
+  <Translation Id="SETAUTOSKILL_OFF" Value="Your skills will no longer be set after death automatically" />
+  <Translation Id="UNVALID_USAGE" Value="Invalid Usage" />
 </Translations>
 ```

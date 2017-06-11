@@ -58,7 +58,7 @@
     <Compile Include="IAutoSkillStorage.cs" />
     <Compile Include="Utils\CommandUtils.cs" />
     <Compile Include="Storage\FileStorage.cs" />
-    <Compile Include="Commands\SkillCommand.cs" />
+    <Compile Include="Commands\SkillsCommand.cs" />
     <Compile Include="Utils\SkillsUtils.cs" />
     <Compile Include="Storage\MemoryStorage.cs" />
     <Compile Include="Skills\SkillSet.cs" />
@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
+    <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Skills\" />

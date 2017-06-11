@@ -77,9 +77,10 @@ namespace AutoSkill
 				{
 					{ "PERMISSION_MISSING", "You do not have permissions to execute this command." },
 					{ "UNKNOWN_COMMAND", "Unknown command \"{0}\"" },
-					{ "SETMAXSKILL_DONE", "Skills set to maximum" },
-					{ "SETAUTOSKILL_ON", "Your skills will be maxed even if you die (I hope not)" },
-					{ "SETAUTOSKILL_OFF", "Your skills will no longer be maxed after death automatically" }
+					{ "SETMAXSKILL_DONE", "Skillset applied" },
+					{ "SETAUTOSKILL_ON", "Your skills will be set even if you die (I hope not)" },
+					{ "SETAUTOSKILL_OFF", "Your skills will no longer be set after death automatically" },
+					{ "INVALID_USAGE", "Invalid usage" }
 				};
 			}
 		}

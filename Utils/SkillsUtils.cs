@@ -24,15 +24,7 @@ namespace AutoSkill.Utils
 
 		public static void SetSkills(UnturnedPlayer player, SkillSet skillSet)
 		{
-			
-			if (skillSet == null)
-			{
-				return;
-			}
-			if (!CanUseSkillSet(player, skillSet))
-			{
-				return;
-			}
+			if (skillSet == null || !CanUseSkillSet(player, skillSet)) return;
 
 			List<Skill> skills = skillSet.Skills;
 			UnturnedSkill[] allSkills = GetAllUnturnedSkills();
@@ -54,7 +46,7 @@ namespace AutoSkill.Utils
 		public static bool CanUseSkillSet(UnturnedPlayer player, SkillSet skillSet)
 		{
 			if (skillSet.PermissionGroup == null) return true;
-			return R.Permissions.GetGroups(player, true).Where((group) => group.Id == skillSet.PermissionGroup.Id).Count() > 0;
+			return R.Permissions.GetGroups(player, true).Count((group) => group.Id == skillSet.PermissionGroup.Id) > 0;
 		}
 
 		public static UnturnedSkill GetSkillByName(string skillName) 
@@ -77,6 +69,7 @@ namespace AutoSkill.Utils
 
 		public static SkillSet FindSkillSetByName(string name) 
 		{
+			if (name == null) return null;
 			return AutoSkillPlugin.Instance.SkillSets.Find((skillSet) => skillSet.Name == name);
 		}
 
@@ -91,7 +84,7 @@ namespace AutoSkill.Utils
 
 		public static SkillSet FindSkillSetForPlayer(UnturnedPlayer player) 
 		{
-			return FindSkillSetsForPlayer(player).AsEnumerable().Last();
+			return FindSkillSetsForPlayer(player).Last();
 		}
 
 		public static UnturnedSkill[] GetAllUnturnedSkills()
