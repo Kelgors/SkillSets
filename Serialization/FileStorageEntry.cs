@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace AutoSkill
+namespace SkillSets
 {
 	
 	public class FileStorageEntry

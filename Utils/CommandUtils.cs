@@ -1,7 +1,7 @@
-﻿using Rocket.API;
+using Rocket.API;
 using Rocket.Unturned.Chat;
 
-namespace AutoSkill.Utils
+namespace SkillSets.Utils
 {
     public static class CommandUtils
     {
@@ -10,7 +10,7 @@ namespace AutoSkill.Utils
 
 		public static void InvalidUsage(IRocketPlayer caller)
 		{
-			UnturnedChat.Say(caller, AutoSkillPlugin.Instance.Translate("INVALID_USAGE"), ErrorColor);
+			UnturnedChat.Say(caller, SkillSetsPlugin.Instance.Translate("INVALID_USAGE"), ErrorColor);
 		}
 		/// <summary>
 		/// Say to player he cannot execute the command
@@ -18,7 +18,7 @@ namespace AutoSkill.Utils
 		/// <param name="caller">The player who try to execute a command</param>
         public static void PermissionMissing(IRocketPlayer caller)
         {
-            UnturnedChat.Say(caller, AutoSkillPlugin.Instance.Translate("PERMISSION_MISSING"), ErrorColor);
+            UnturnedChat.Say(caller, SkillSetsPlugin.Instance.Translate("PERMISSION_MISSING"), ErrorColor);
         }
 
 		/// <summary>
@@ -28,7 +28,7 @@ namespace AutoSkill.Utils
 		/// <param name="command">The command he tried to execute</param>
         public static void UnknownCommand(IRocketPlayer caller, string command)
         {
-            UnturnedChat.Say(caller, AutoSkillPlugin.Instance.Translate("UNKNOWN_COMMAND", new string[] { command }), ErrorColor);
+            UnturnedChat.Say(caller, SkillSetsPlugin.Instance.Translate("UNKNOWN_COMMAND", new string[] { command }), ErrorColor);
         }
     }
 }

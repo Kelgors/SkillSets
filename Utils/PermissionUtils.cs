@@ -1,6 +1,6 @@
 ﻿using Rocket.API;
 
-namespace AutoSkill
+namespace SkillSets
 {
 	public static class PermissionUtils
 	{

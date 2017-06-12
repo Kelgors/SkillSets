@@ -1,92 +1,159 @@
-﻿<h1 style="text-align: center;">AutoSkill</h1>
-<h2 style="text-align: center;">SkillSets provided with permissions/commands</h2>
-&nbsp;
+﻿<h1 id="skillsets" style="text-align: center;">SkillSets</h1>
+<h2 id="setsofskillsprovidedwithpermissionscommands" style="text-align: center;">Sets of skills provided with permissions/commands</h2>
+This plugins allow you to create several sets of skills for your arena or RP server.
+You can assign one or more SkillSets to PermissionGroups.
 
-By default, the configuration generated will max all skills when the player is connecting or died
-<h3>Commands</h3>
+If a player never ran the command <code>/skillsets skillsetname</code> and is eligible to two or more default SkillSets, the plugins will
+select the first most skilled SkillSet.
+
+If a player want to have a specific skillset, he can list them through the command <code>/skillsets</code>
+and select one of them with the command <code>/skillsets skillsetname</code> (skillsetname is the &lt;Name&gt; defined in the configuration file)
+<h3 id="commands">Commands</h3>
 <ul>
-  <li><strong>/skills</strong> show the command usage and skill list relative to your permissions</li>
-  <li><strong>/skills &lt;SkillSetName&gt;</strong> set your skills according to the configuration</li>
+  <li><strong>/skillsets</strong> show the command usage and skill list relative to your permissions</li>
+  <li><strong>/skillsets yourskillsetname</strong> set your skills according to the configuration</li>
 </ul>
-&nbsp;
-
-<h3>Permissions</h3>
-<ul>
-  <li><strong>skills</strong> for /skills</li>
-  <li><strong>skills.&lt;SkillSetName&gt;</strong> for /skills &lt;SkillSetName&gt;</li>
-</ul>
-&nbsp;
-
-<h3>AutoSkillConfiguration</h3>
+<h3 id="permissions">Permissions</h3>
+<pre class="xml language-xml">&lt;Permission Cooldown="0"&gt;skillsets&lt;/Permission&gt;
+&lt;Permission Cooldown="0"&gt;skillsets.police&lt;/Permission&gt;
+&lt;Permission Cooldown="0"&gt;skillsets.yourskillsetname&lt;/Permission&gt;
+</pre>
+<h3 id="ltskillsetsconfigurationgt">&lt;SkillSetsConfiguration&gt;</h3>
 <table>
-  <thead>
-    <tr>
-      <td><strong>Xml tag name</strong></td>
-      <td><strong>Default value</strong></td>
-      <td><strong>Description</strong></td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>StorageType</td>
-      <td>file</td>
-      <td>
-        <strong>file</strong>: to save on the disk
-        <strong>memory</strong>: to save into the memory (when the server is shutdown, nothing is saved)
-      </td>
-    </tr>
-    <tr>
-      <td>FilePath</td>
-      <td>EnabledAutoSkill.xml</td>
-      <td>The path where the file is located (only StorageType: file)</td>
-    </tr>
-    <tr>
-      <td>PeriodicSave</td>
-      <td>10000</td>
-      <td>The delay between saves in milliseconds (only StorageType: file (for now))</td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<td><strong>Xml tag name</strong></td>
+<td><strong>Default value</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>StorageType</td>
+<td>file</td>
+<td><strong>file</strong>: to save skillsets assignation on the disk
+<strong>memory</strong>: to save them into the memory (when the server is shutdown, nothing is saved)</td>
+</tr>
+<tr>
+<td>FilePath</td>
+<td>EnabledSkillSets.xml</td>
+<td>The path where the file is located (only StorageType: file)</td>
+</tr>
+<tr>
+<td>PeriodicSave</td>
+<td>10000</td>
+<td>The delay between saves in milliseconds (only StorageType: file (for now))</td>
+</tr>
+</tbody>
 </table>
-&nbsp;
-
-<h3>SkillSet</h3>
+<h3 id="ltskillsetgt">&lt;SkillSet&gt;</h3>
 <table>
-  <thead>
-    <tr>
-      <td><strong>Xml tag name</strong></td>
-      <td><strong>Example value</strong></td>
-      <td><strong>Description</strong></td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Name</td>
-      <td>offense</td>
-      <td>The name of the skillset</td>
-    </tr>
-    <tr>
-      <td>Default</td>
-      <td>true</td>
-      <td>Define which SkillSet will be automatically assigned to player (you can set all your SkillSet/Default to false)</td>
-    </tr>
-    <tr>
-      <td>Skills</td>
-      <td>
-        <pre>&lt;Skill Name="Agriculture" Level="7" /&gt;
-          &lt;Skill Name="Engineer" Level="3" /&gt;
-        </pre>
-      </td>
-      <td>The skill list to be updated. All skills not referenced in this list will be Leveled to 0 by default.</td>
-    </tr>
-  </tbody>
+<thead>
+<tr>
+<td><strong>Xml tag name</strong></td>
+<td><strong>Example Value</strong></td>
+<td><strong>Description</strong></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Name</td>
+<td>offense</td>
+<td>The name of the skillset</td>
+</tr>
+<tr>
+<td>Default</td>
+<td>true</td>
+<td>Define which SkillSet will be automatically assigned to player (you can set all your SkillSet/Default to true or false)</td>
+</tr>
+<tr>
+<td>Skills</td>
+<td>
+<pre>&lt;Skill Name="Agriculture" Level="7" /&gt;
+&lt;Skill Name="Engineer" Level="3" /&gt;
+</pre>
+</td>
+<td>The skill list to be updated. All skills not referenced in this list will be Leveled to zero by default.</td>
+</tr>
+</tbody>
 </table>
-&nbsp;
+<h3 id="example">Example</h3>
+<h4 id="allskillsmaxedforpeoplewithvippermissiongroupegforanarena">All skills maxed for people with vip permission group (eg for an arena)</h4>
+<h5 id="rocketpluginsskillsetsskillsetsconfigurationxml">Rocket/Plugins/SkillSets/SkillSets.configuration.xml</h5>
+In this example, you dont need to give the 'skillsets' permission. The command will never be used by your players because all skillsets have &lt;Default&gt;true&lt;/Default&gt;.
 
-<h3>TODO</h3>
+The &lt;Default&gt;true&lt;/Default&gt; of skillsets.maxed will assign automatically to the player all skills on connection or after death.
+<pre>&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;SkillSetsConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"&gt;
+  &lt;StorageType&gt;file&lt;/StorageType&gt;
+  &lt;FilePath&gt;EnabledSkillSets.xml&lt;/FilePath&gt;
+  &lt;PeriodicSave&gt;10000&lt;/PeriodicSave&gt;
+  &lt;SkillSets&gt;
+    &lt;SkillSet&gt;
+      &lt;Name&gt;maxed&lt;/Name&gt;
+      &lt;Default&gt;true&lt;/Default&gt;
+      &lt;Skills&gt;
+        &lt;Skill Name="Agriculture" Level="7" /&gt;
+        &lt;Skill Name="Cardio" Level="5" /&gt;
+        &lt;Skill Name="Cooking" Level="3" /&gt;
+        &lt;Skill Name="Crafting" Level="3" /&gt;
+        &lt;Skill Name="Dexerity" Level="5" /&gt;
+        &lt;Skill Name="Diving" Level="5" /&gt;
+        &lt;Skill Name="Engineer" Level="3" /&gt;
+        &lt;Skill Name="Exercise" Level="5" /&gt;
+        &lt;Skill Name="Fishing" Level="5" /&gt;
+        &lt;Skill Name="Healing" Level="7" /&gt;
+        &lt;Skill Name="Immunity" Level="5" /&gt;
+        &lt;Skill Name="Mechanic" Level="5" /&gt;
+        &lt;Skill Name="Outdoors" Level="5" /&gt;
+        &lt;Skill Name="Overkill" Level="7" /&gt;
+        &lt;Skill Name="Parkour" Level="5" /&gt;
+        &lt;Skill Name="Sharpshooter" Level="7" /&gt;
+        &lt;Skill Name="Sneakybeaky" Level="7" /&gt;
+        &lt;Skill Name="Strength" Level="5" /&gt;
+        &lt;Skill Name="Survival" Level="5" /&gt;
+        &lt;Skill Name="Toughness" Level="5" /&gt;
+        &lt;Skill Name="Vitality" Level="5" /&gt;
+        &lt;Skill Name="Warmblooded" Level="5" /&gt;
+      &lt;/Skills&gt;
+    &lt;/SkillSet&gt;
+  &lt;/SkillSets&gt;
+&lt;/SkillSetsConfiguration&gt;
+</pre>
+<h5 id="rocketpermissionconfigxml">Rocket/Permission.config.xml</h5>
+<pre>&lt;RocketPermissions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;DefaultGroup&gt;default&lt;/DefaultGroup&gt;
+  &lt;Groups&gt;
+    &lt;Group&gt;
+      &lt;Id&gt;default&lt;/Id&gt;
+      &lt;DisplayName&gt;Guest&lt;/DisplayName&gt;
+      &lt;Prefix /&gt;
+      &lt;Suffix /&gt;
+      &lt;Color&gt;white&lt;/Color&gt;
+      &lt;Members /&gt;
+      &lt;Priority&gt;100&lt;/Priority&gt;
+      &lt;Permissions&gt;
+        &lt;Permission Cooldown="0"&gt;p&lt;/Permission&gt;
+      &lt;/Permissions&gt;
+    &lt;/Group&gt;
+    &lt;Group&gt;
+      &lt;Id&gt;vip&lt;/Id&gt;
+      &lt;DisplayName&gt;VIP&lt;/DisplayName&gt;
+      &lt;Prefix /&gt;
+      &lt;Suffix /&gt;
+      &lt;Color&gt;FF9900&lt;/Color&gt;
+      &lt;Members /&gt;
+      &lt;ParentGroup&gt;default&lt;/ParentGroup&gt;
+      &lt;Priority&gt;100&lt;/Priority&gt;
+      &lt;Permissions&gt;
+        &lt;Permission Cooldown="0"&gt;skillsets.maxed&lt;/Permission&gt;
+      &lt;/Permissions&gt;
+    &lt;/Group&gt;
+  &lt;/Groups&gt;
+&lt;/RocketPermissions&gt;
+</pre>
+<h3 id="todo">TODO</h3>
 <ul>
-  <li>Handle Cooldown for skills.&lt;SkillSetName&gt;</li>
-  <li>
-    Absolute &lt;FilePath&gt;
-    Permit to set the FilePath to a shared location
-  </li>
+  <li>Handle Cooldown for skills.</li>
+  <li>Absolute Permit to set the FilePath to a shared location</li>
 </ul>

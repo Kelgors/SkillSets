@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Rocket.API.Serialisation;
 using Rocket.Core;
-using AutoSkill.Utils;
 
-namespace AutoSkill
+namespace SkillSets
 {
 	public class SkillSet
 	{
-		public static SkillSet FromConfigurationSkillSet(AutoSkillConfiguration.Configuration_SkillSet confSkillSet) 
+		public static SkillSet FromConfigurationSkillSet(SkillSetsConfiguration.Configuration_SkillSet confSkillSet) 
 		{
 
 			RocketPermissionsGroup group = null;
@@ -43,7 +42,7 @@ namespace AutoSkill
 
 		public string getPermissionName()
 		{
-			return string.Format("skills.{0}", Name);
+			return string.Format("skillsets.{0}", Name);
 		}
 
 		public int GetScore()

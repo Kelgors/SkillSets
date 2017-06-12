@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -6,14 +6,14 @@ using System.Xml.Serialization;
 using Rocket.Core.Logging;
 using Steamworks;
 
-namespace AutoSkill.Storage
+namespace SkillSets.Storage
 {
-    class FileStorage : IAutoSkillStorage
+    class FileStorage : ISkillSetsUsersStorage
     {
 		internal List<FileStorageEntry> Entries;
 		internal bool isValid;
 
-		string FilePath => Path.Combine(AutoSkillPlugin.Instance.Directory, AutoSkillPlugin.Instance.Configuration.Instance.FilePath);
+		string FilePath => Path.Combine(SkillSetsPlugin.Instance.Directory, SkillSetsPlugin.Instance.Configuration.Instance.FilePath);
 
         public string Get(CSteamID steamId)
         {
@@ -26,18 +26,18 @@ namespace AutoSkill.Storage
         {
 			if (FilePath == null || FilePath.Trim().Length == 0)
 			{
-				throw new Exception(AutoSkillPlugin.WrapLog("ConfigurationError : <FilePath> is not defined or empty"));
+				throw new Exception(SkillSetsPlugin.WrapLog("ConfigurationError : <FilePath> is not defined or empty"));
 			}
             EnsureDirectoryIsCreated();
 
-            Logger.LogWarning(AutoSkillPlugin.WrapLog(string.Format("FileStorage: Load {0}", FilePath)));
+            Logger.LogWarning(SkillSetsPlugin.WrapLog(string.Format("FileStorage: Load {0}", FilePath)));
 			Entries = ReadFile();
 			isValid = File.Exists(FilePath);
         }
 
 		public void Unload()
         {
-            Logger.LogError(AutoSkillPlugin.WrapLog("FileStorage: Unloading"));
+            Logger.LogError(SkillSetsPlugin.WrapLog("FileStorage: Unloading"));
             SaveList();
             Entries = null;
         }
@@ -97,7 +97,7 @@ namespace AutoSkill.Storage
 			}
 			catch (Exception ex)
 			{
-				Logger.LogError(AutoSkillPlugin.WrapLog("FileStorage: Cannot save list into filesystem"));
+				Logger.LogError(SkillSetsPlugin.WrapLog("FileStorage: Cannot save list into filesystem"));
 				Logger.LogException(ex);
 			}
 			finally 

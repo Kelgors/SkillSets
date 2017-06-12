@@ -1,23 +1,23 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Rocket.API;
 using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
-using AutoSkill.Utils;
+using SkillSets.Utils;
 
-namespace AutoSkill.Commands
+namespace SkillSets.Commands
 {
     class SkillsCommand : IRocketCommand
     {
         public AllowedCaller AllowedCaller => AllowedCaller.Player;
 
-        public string Name => "skills";
+        public string Name => "skillsets";
 
-        public string Help => "Set all skills to maximum value";
+        public string Help => "Set skillset to your avatar";
 
         public string Syntax => "[SkillSetName]";
 
-		public List<string> Aliases => new List<string>() { "skill" };
+		public List<string> Aliases => new List<string>() { "skillset" };
 		public List<string> Permissions => new List<string>();
 
 		public void Execute(IRocketPlayer caller, string[] commands)
@@ -31,14 +31,14 @@ namespace AutoSkill.Commands
 
 		void ShowVoid(IRocketPlayer caller)
 		{
-			UnturnedChat.Say(caller, "AutoSkill usage");
-			UnturnedChat.Say(caller, "/skills [SkillSetName]");
+			UnturnedChat.Say(caller, "SkillSets usage");
+			UnturnedChat.Say(caller, "/skillset [SkillSetName]");
 			ShowList(caller);
 		}
 
 		void ShowList(IRocketPlayer caller)
 		{
-			string currentSkillsetName = AutoSkillPlugin.Instance.GetStorage().Get(((UnturnedPlayer)caller).CSteamID);
+			string currentSkillsetName = SkillSetsPlugin.Instance.GetStorage().Get(((UnturnedPlayer)caller).CSteamID);
 			string[] skillSetNames = SkillsUtils.GetPermittedSkillSets(caller).Select((skillSet) =>
 			{
 				if (skillSet.Name == currentSkillsetName) return string.Format("[{0}]", skillSet.Name);
@@ -62,8 +62,8 @@ namespace AutoSkill.Commands
 				return;
 			}
 			SkillsUtils.SetSkills((UnturnedPlayer)caller, skillSetName);
-			bool saved = AutoSkillPlugin.Instance.GetStorage().Save(((UnturnedPlayer)caller).CSteamID, skillSetName);
-			UnturnedChat.Say(caller, AutoSkillPlugin.Instance.Translate("SETMAXSKILL_DONE"));
+			bool saved = SkillSetsPlugin.Instance.GetStorage().Save(((UnturnedPlayer)caller).CSteamID, skillSetName);
+			UnturnedChat.Say(caller, SkillSetsPlugin.Instance.Translate("SKILLSET_APPLIED"));
 		}
 
 		bool IsPermitted(IRocketPlayer caller, SkillSet skillSet)

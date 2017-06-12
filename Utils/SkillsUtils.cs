@@ -1,14 +1,13 @@
-﻿using System;
+using System;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using Rocket.API;
-using Rocket.Core;
 using Rocket.Core.Logging;
 using Rocket.Unturned.Player;
 using Rocket.Unturned.Skills;
 
-namespace AutoSkill.Utils
+namespace SkillSets.Utils
 {
 	public static class SkillsUtils
 	{
@@ -77,7 +76,7 @@ namespace AutoSkill.Utils
 			}
 			catch (Exception ex)
 			{
-				Logger.LogError(AutoSkillPlugin.WrapLog(string.Format("The skill \"{0}\" is not found", skillName)));
+				Logger.LogError(SkillSetsPlugin.WrapLog(string.Format("The skill \"{0}\" is not found", skillName)));
 				Logger.LogException(ex);
 			}
 			return null;
@@ -86,7 +85,7 @@ namespace AutoSkill.Utils
 		public static SkillSet FindSkillSetByName(string name) 
 		{
 			if (name == null) return null;
-			return AutoSkillPlugin.Instance.SkillSets.Find((skillSet) => skillSet.Name == name);
+			return SkillSetsPlugin.Instance.SkillSets.Find((skillSet) => skillSet.Name == name);
 		}
 
 		public static List<SkillSet> GetDefaultPermittedSkillSets(IRocketPlayer player)
@@ -101,7 +100,7 @@ namespace AutoSkill.Utils
 
 		public static List<SkillSet> GetPermittedSkillSets(IRocketPlayer player) 
 		{
-			return AutoSkillPlugin.Instance.SkillSets.Where((SkillSet skillset) =>
+			return SkillSetsPlugin.Instance.SkillSets.Where((SkillSet skillset) =>
 			{
 				return PermissionUtils.IsPermitted(player, skillset);
 			}).ToList();

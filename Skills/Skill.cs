@@ -1,11 +1,11 @@
-﻿using Rocket.Unturned.Skills;
-using AutoSkill.Utils;
+using Rocket.Unturned.Skills;
+using SkillSets.Utils;
 
-namespace AutoSkill
+namespace SkillSets
 {
 	public class Skill
 	{
-		public static Skill FromConfigurationSkill(AutoSkillConfiguration.Configuration_Skill confSkill)
+		public static Skill FromConfigurationSkill(SkillSetsConfiguration.Configuration_Skill confSkill)
 		{
 			UnturnedSkill skill = SkillsUtils.GetSkillByName(confSkill.Name);
 			if (skill != null) return new Skill(skill, confSkill.Level);

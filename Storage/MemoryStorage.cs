@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Steamworks;
 
-namespace AutoSkill.Storage
+namespace SkillSets.Storage
 {
-	public class MemoryStorage : IAutoSkillStorage
+	public class MemoryStorage : ISkillSetsUsersStorage
 	{
 		Dictionary<ulong, string> Memory;
 
