@@ -64,9 +64,9 @@
     <Compile Include="Skills\SkillSet.cs" />
     <Compile Include="Skills\Skill.cs" />
     <Compile Include="Serialization\FileStorageEntry.cs" />
+    <Compile Include="Utils\PermissionUtils.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="README.md" />
     <None Include=".gitignore" />
     <None Include="lib\Rocket.API.dll" />
     <None Include="lib\Rocket.Core.dll" />
@@ -74,6 +74,7 @@
     <None Include="lib\UnityEngine.dll" />
     <None Include="lib\Assembly-CSharp.dll" />
     <None Include="lib\Assembly-CSharp-firstpass.dll" />
+    <None Include="README.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Skills\" />

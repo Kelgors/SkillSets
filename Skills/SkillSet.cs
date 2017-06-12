@@ -2,6 +2,7 @@
 using System.Linq;
 using Rocket.API.Serialisation;
 using Rocket.Core;
+using AutoSkill.Utils;
 
 namespace AutoSkill
 {
@@ -20,9 +21,9 @@ namespace AutoSkill
 		}
 
 		public readonly string Name = string.Empty;
-		public readonly RocketPermissionsGroup PermissionGroup = null;
+		public readonly RocketPermissionsGroup PermissionGroup;
 		public readonly List<Skill> Skills = new List<Skill>();
-		public readonly bool IsDefault = false;
+		public readonly bool IsDefault;
 
 		public int PermissionGroupPriority
 		{
@@ -38,6 +39,19 @@ namespace AutoSkill
 			PermissionGroup = permissionGroup;
 			Skills = skills;
 			IsDefault = isDefault;
+		}
+
+		public string getPermissionName()
+		{
+			return string.Format("skills.{0}", Name);
+		}
+
+		public int GetScore()
+		{
+			return Skills.Aggregate(0, (int acc, Skill skill) =>
+			{
+				return acc + (int)System.Math.Round(((double)skill.Level) / ((double)skill.MaxLevel) * 100);
+			});
 		}
 
 		public bool IsEmpty() 

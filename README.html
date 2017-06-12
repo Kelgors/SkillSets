@@ -1,0 +1,105 @@
+﻿<h1 style="text-align: center;">AutoSkill</h1>
+<h2 style="text-align: center;">SkillSets provided with permissions/commands</h2>
+&nbsp;
+
+By default, the configuration generated will max all skills when the player is connecting or died
+<h3>Commands</h3>
+<ul>
+  <li><strong>/skills</strong> show the command usage relative to your permissions</li>
+  <li><strong>/skills list</strong> list all available skill sets</li>
+  <li><strong>/skills &lt;SkillSetName&gt;</strong> set your skills according to the configuration</li>
+</ul>
+&nbsp;
+
+<h3>Permissions</h3>
+<ul>
+  <li><strong>skills</strong> for /skills and /skills list</li>
+  <li><strong>skills.set</strong> for /skills &lt;SkillSetName&gt;</li>
+  <li><strong>skills.on</strong> for /skills &lt;SkillSetName&gt; on</li>
+  <li><strong>skills.off</strong> for /skills off</li>
+</ul>
+&nbsp;
+
+<h3>AutoSkillConfiguration</h3>
+<table>
+  <thead>
+    <tr>
+      <td><strong>Xml tag name</strong></td>
+      <td><strong>Default value</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>StorageType</td>
+      <td>file</td>
+      <td>
+        <strong>file</strong>: to save on the disk
+        <strong>memory</strong>: to save into the memory (when the server is shutdown, nothing is saved)
+      </td>
+    </tr>
+    <tr>
+      <td>FilePath</td>
+      <td>EnabledAutoSkill.xml</td>
+      <td>The path where the file is located (only StorageType: file)</td>
+    </tr>
+    <tr>
+      <td>PeriodicSave</td>
+      <td>10000</td>
+      <td>The delay between saves in milliseconds (only StorageType: file (for now))</td>
+    </tr>
+  </tbody>
+</table>
+&nbsp;
+
+<h3>SkillSet</h3>
+<table>
+  <thead>
+    <tr>
+      <td><strong>Xml tag name</strong></td>
+      <td><strong>Example value</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Name</td>
+      <td>offense</td>
+      <td>The name of the skillset</td>
+    </tr>
+    <tr>
+      <td>PermissionGroup</td>
+      <td>vip</td>
+      <td>The Id of the PermissionGroup located in your Permissions.config.xml (if empty, the Skillset is not restricted)</td>
+    </tr>
+    <tr>
+      <td>Default</td>
+      <td>true</td>
+      <td>Define which SkillSet will be automatically assigned to player (you can set all your SkillSet/Default to false)</td>
+    </tr>
+    <tr>
+      <td>Skills</td>
+      <td>
+        <pre>&lt;Skill Name="Agriculture" Level="7" /&gt;
+          &lt;Skill Name="Engineer" Level="3" /&gt;
+        </pre>
+      </td>
+      <td>The skill list to be updated. All skills not referenced in this list will be Leveled to 0 by default.</td>
+    </tr>
+  </tbody>
+</table>
+&nbsp;
+
+<h3>TODO</h3>
+<ul>
+  <li>
+    Multiple SkillSet with Default=true
+    Handle multiple &lt;SkillSet&gt; with &lt;Default&gt;true&lt;/Default&gt; and prioritize with PermissionGroup priority (or add &lt;Priority&gt; to SkillSet) or take the first one.
+    In case if you assign one SkillSet for one PermissionGroup, you should set all SkillSet with &lt;Default&gt;true&lt;/Default&gt;
+  </li>
+  <li>Handle Cooldown for set/on/off</li>
+  <li>
+    Absolute &lt;FilePath&gt;
+    Permit to set the FilePath to a shared location
+  </li>
+</ul>

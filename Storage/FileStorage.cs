@@ -56,30 +56,19 @@ namespace AutoSkill.Storage
 		/// <returns>The save.</returns>
 		/// <param name="steamId">Steam identifier.</param>
 		/// <param name="skillSetName">Skill set name.</param>
-		/// <param name="enabled">If set to <c>true</c> enabled.</param>
-        public bool Save(CSteamID steamId, string skillSetName, bool enabled)
+        public bool Save(CSteamID steamId, string skillSetName)
         {
 			int index = Entries.FindIndex((_entry) => _entry.SteamId == steamId.m_SteamID);
-			if (enabled)
+			if (index == -1)
 			{
-				if (index == -1)
-				{
-					Entries.Add(new FileStorageEntry(steamId.m_SteamID, skillSetName));
-				}
-				else
-				{
-					Entries[index].SkillSetName = skillSetName;
-				}
-				isValid = false;
-				return true;
-			} 
-			else if (index > -1)
-            {
-                Entries.RemoveAt(index);
-				isValid = false;
-				return true;
-            }
-			return false;
+				Entries.Add(new FileStorageEntry(steamId.m_SteamID, skillSetName));
+			}
+			else
+			{
+				Entries[index].SkillSetName = skillSetName;
+			}
+			isValid = false;
+			return true;
         }
 
 	    internal void EnsureDirectoryIsCreated()
@@ -145,6 +134,17 @@ namespace AutoSkill.Storage
 				entries = (List<FileStorageEntry>) output;
 			}
 			return entries;
+		}
+
+		public bool Remove(CSteamID steamId)
+		{
+			int index = Entries.FindIndex((FileStorageEntry obj) => obj.SteamId == steamId.m_SteamID);
+			if (index > -1)
+			{
+				Entries.RemoveAt(index);
+				return true;
+			}
+			return false;
 		}
 	}
 }

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Serialization;
 using Rocket.API;
+using AutoSkill.Utils;
 
 namespace AutoSkill
 {
@@ -28,14 +30,22 @@ namespace AutoSkill
         public void LoadDefaults()
         {
             StorageType = "file";
-            FilePath = "EnabledAutoSkill.dat";
+            FilePath = "EnabledAutoSkill.xml";
 			PeriodicSave = 10000;
 			SkillSets = new List<Configuration_SkillSet> {
 				new Configuration_SkillSet()
 				{
 					Name = "default",
 					Default = true,
-					PermissionGroup = "default",
+					Skills = new List<Configuration_Skill>() {
+						new Configuration_Skill() { Name = "Exercise", Level = 2 },
+						new Configuration_Skill() { Name = "Sharpshooter", Level = 1 },
+					}
+				},
+				new Configuration_SkillSet()
+				{
+					Name = "maxed",
+					Default = false,
 					Skills = new List<Configuration_Skill>() {
 						new Configuration_Skill() { Name = "Agriculture", Level = 7 },
 						new Configuration_Skill() { Name = "Cardio", Level = 5 },
@@ -59,6 +69,54 @@ namespace AutoSkill
 						new Configuration_Skill() { Name = "Toughness", Level = 5 },
 						new Configuration_Skill() { Name = "Vitality", Level = 5 },
 						new Configuration_Skill() { Name = "Warmblooded", Level = 5 }
+					}
+				},
+				new Configuration_SkillSet()
+				{
+					Name = "farmer",
+					Default = false,
+					Skills = new List<Configuration_Skill>() {
+						new Configuration_Skill() { Name = "Agriculture", Level = 7 },
+						new Configuration_Skill() { Name = "Cooking", Level = 1 },
+						new Configuration_Skill() { Name = "Exercise", Level = 2 },
+						new Configuration_Skill() { Name = "Mechanic", Level = 1 },
+						new Configuration_Skill() { Name = "Strength", Level = 3 },
+					}
+				},
+				new Configuration_SkillSet()
+				{
+					Name = "police",
+					Default = false,
+					Skills = new List<Configuration_Skill>() {
+						new Configuration_Skill() { Name = "Cardio", Level = 2 },
+						new Configuration_Skill() { Name = "Dexerity", Level = 2 },
+						new Configuration_Skill() { Name = "Exercise", Level = 2 },
+						new Configuration_Skill() { Name = "Overkill", Level = 2 },
+						new Configuration_Skill() { Name = "Sharpshooter", Level = 3 },
+					}
+				},
+				new Configuration_SkillSet()
+				{
+					Name = "military",
+					Default = false,
+					Skills = new List<Configuration_Skill>() {
+						new Configuration_Skill() { Name = "Cardio", Level = 3 },
+						new Configuration_Skill() { Name = "Dexerity", Level = 3 },
+						new Configuration_Skill() { Name = "Exercise", Level = 3 },
+						new Configuration_Skill() { Name = "Overkill", Level = 4 },
+						new Configuration_Skill() { Name = "Sharpshooter", Level = 5 },
+					}
+				},
+				new Configuration_SkillSet()
+				{
+					Name = "specops",
+					Default = false,
+					Skills = new List<Configuration_Skill>() {
+						new Configuration_Skill() { Name = "Cardio", Level = 5 },
+						new Configuration_Skill() { Name = "Dexerity", Level = 5 },
+						new Configuration_Skill() { Name = "Exercise", Level = 5 },
+						new Configuration_Skill() { Name = "Overkill", Level = 7 },
+						new Configuration_Skill() { Name = "Sharpshooter", Level = 7 },
 					}
 				}
 			};

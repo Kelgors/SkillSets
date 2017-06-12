@@ -23,8 +23,8 @@ namespace AutoSkill
 
 		public static AutoSkillPlugin Instance;
 		public List<SkillSet> SkillSets;
-		public SkillSet DefaultSkillSet;
-		IAutoSkillStorage Storage;
+
+		internal IAutoSkillStorage Storage;
 		internal DateTime LastPeriodicSave;
 		internal bool PeriodicSaveEnabled = false;
 		internal uint PeriodicSaveMs;
@@ -39,7 +39,7 @@ namespace AutoSkill
 			Instance = this;
 
 			LoadPeriodicSave();
-			ReflectConfigurationSkills();
+			LoadSkillSets();
 			Storage = CreateStorage();
 			Storage.Load();
 
@@ -94,9 +94,9 @@ namespace AutoSkill
 			}
 		}
 
-		internal void ReflectConfigurationSkills() {
+		internal void LoadSkillSets() {
 			SkillSets = Configuration.Instance.SkillSets.Select((confSkillSet) => SkillSet.FromConfigurationSkillSet(confSkillSet)).ToList();
-			DefaultSkillSet = SkillSets.Find((skillSet) => skillSet.IsDefault);
+
 		}
 
 		/// <summary>
@@ -125,6 +125,28 @@ namespace AutoSkill
 			Instance = null;
 		}
 
+		internal void ApplySkillSetToPlayer(UnturnedPlayer player)
+		{
+			string skillSetName = GetStorage().Get(player.CSteamID);
+			SkillSet skillset = SkillsUtils.FindSkillSetByName(skillSetName);
+			if (skillset != null && !PermissionUtils.IsPermitted(player, skillset))
+			{
+				// The SkillSet disappears or player doesn't have Permission anymore
+				// Need to remove it from Storage
+				GetStorage().Remove(player.CSteamID);
+				skillset = null;
+			}
+
+			if (skillset == null)
+			{
+				skillset = SkillsUtils.GetHigherSkillSet(SkillsUtils.GetDefaultPermittedSkillSets(player));
+			}
+			if (skillset != null)
+			{
+				SkillsUtils.SetSkills(player, skillset);
+			}
+		}
+
 		#region Translation
 		public override TranslationList DefaultTranslations
 		{
@@ -135,8 +157,6 @@ namespace AutoSkill
 					{ "PERMISSION_MISSING", "You do not have permissions to execute this command." },
 					{ "UNKNOWN_COMMAND", "Unknown command \"{0}\"" },
 					{ "SETMAXSKILL_DONE", "Skillset applied" },
-					{ "SETAUTOSKILL_ON", "Your skills will be set even if you die (I hope not)" },
-					{ "SETAUTOSKILL_OFF", "Your skills will no longer be set after death automatically" },
 					{ "INVALID_USAGE", "Invalid usage" }
 				};
 			}
@@ -146,28 +166,12 @@ namespace AutoSkill
 		#region Events
 		public void UnturnedPlayerEvents_OnPlayerRevive(UnturnedPlayer player, UnityEngine.Vector3 position, byte angle)
 		{
-			string skillSetName = GetStorage().Get(player.CSteamID);
-			if (skillSetName != null)
-			{
-				SkillsUtils.SetSkills(player, skillSetName);
-			}
-			else if (DefaultSkillSet != null)
-			{
-				SkillsUtils.SetSkills(player, DefaultSkillSet);
-			}
+			ApplySkillSetToPlayer(player);
 		}
 
 		public void U_Events_OnPlayerConnected(UnturnedPlayer player)
 		{
-			string skillSetName = GetStorage().Get(player.CSteamID);
-			if (skillSetName != null)
-			{
-				SkillsUtils.SetSkills(player, skillSetName);
-			}
-			else if (DefaultSkillSet != null)
-			{
-				SkillsUtils.SetSkills(player, DefaultSkillSet);
-			}
+            ApplySkillSetToPlayer(player);
 		}
 		#endregion
 

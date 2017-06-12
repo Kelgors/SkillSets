@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Steamworks;
 
 namespace AutoSkill.Storage
@@ -24,12 +25,19 @@ namespace AutoSkill.Storage
 		/// </summary>
 		public void PeriodicSave() {}
 
-		public bool Save(CSteamID steamId, string skillSetName, bool enabled)
+		public bool Remove(CSteamID steamId)
 		{
-			if (enabled)
-				Memory[steamId.m_SteamID] = skillSetName;
-			else
+			if (Memory.ContainsKey(steamId.m_SteamID))
+			{
 				Memory.Remove(steamId.m_SteamID);
+				return true;
+			}
+			return false;
+		}
+
+		public bool Save(CSteamID steamId, string skillSetName)
+		{
+			Memory[steamId.m_SteamID] = skillSetName;
 			return true;
 		}
 

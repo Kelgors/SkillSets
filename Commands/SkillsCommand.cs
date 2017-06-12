@@ -9,110 +9,67 @@ namespace AutoSkill.Commands
 {
     class SkillsCommand : IRocketCommand
     {
-
-		enum SWITCH
-		{
-			NULL,
-			ON,
-			OFF
-		};
         public AllowedCaller AllowedCaller => AllowedCaller.Player;
 
         public string Name => "skills";
 
         public string Help => "Set all skills to maximum value";
 
-        public string Syntax => "<SkillSetName|list> [on/off]";
+        public string Syntax => "[SkillSetName]";
 
 		public List<string> Aliases => new List<string>() { "skill" };
 		public List<string> Permissions => new List<string>();
 
 		public void Execute(IRocketPlayer caller, string[] commands)
         {
-			string skillSetName = null;
-			bool showList = false;
-			SWITCH swt = SWITCH.NULL;
-
 			if (commands.Length > 0 && commands[0].Trim().Length > 0)
 			{
-				if (commands[0] == "list") showList = true;
-				else if (commands[0] == "off") swt = SWITCH.OFF;
-				else skillSetName = commands[0];
+                SetSkillSet(caller, commands[0]);
 			}
-			if (commands.Length > 1 && commands[1].Trim().Length > 0)
-			{
-				if (commands[1] == "on") swt = SWITCH.ON;
-				else if (commands[1] == "off") swt = SWITCH.OFF;
-			}
-
-			if (showList) ShowList(caller);
-			else if (swt == SWITCH.OFF || skillSetName != null) SetSkillSet(caller, skillSetName, swt);
-			else if (commands.Length == 0) ShowVoid(caller);
-			else CommandUtils.InvalidUsage(caller);
+			else ShowVoid(caller);
         }
 
 		void ShowVoid(IRocketPlayer caller)
 		{
-			var textColor = new UnityEngine.Color(0x92, 0x82, 0x8d);
-
-			UnturnedChat.Say(caller, "AutoSkill usage", textColor);
-			UnturnedChat.Say(caller, "/skills list - List all available skillset", textColor);
-			if (caller.HasPermission("skills.set")) {
-				UnturnedChat.Say(caller, "/skills <SkillSetName> - Set skillset", textColor);
-			}
-			if (caller.HasPermission("skills.on")) {
-				UnturnedChat.Say(caller, "/skills <SkillSetName> on - Auto set skills when you die", textColor);
-			}
-			if (caller.HasPermission("skills.off")) {
-				UnturnedChat.Say(caller, "/skills off - Disable auto set skills when you die", textColor);
-			}
+			UnturnedChat.Say(caller, "AutoSkill usage");
+			UnturnedChat.Say(caller, "/skills [SkillSetName]");
+			ShowList(caller);
 		}
 
 		void ShowList(IRocketPlayer caller)
 		{
-			string[] skillSetNames = SkillsUtils.FindSkillSetsForPlayer((UnturnedPlayer)caller).Select((skillSet) => skillSet.Name).ToArray();
+			string currentSkillsetName = AutoSkillPlugin.Instance.GetStorage().Get(((UnturnedPlayer)caller).CSteamID);
+			string[] skillSetNames = SkillsUtils.GetPermittedSkillSets(caller).Select((skillSet) =>
+			{
+				if (skillSet.Name == currentSkillsetName) return string.Format("[{0}]", skillSet.Name);
+				return skillSet.Name;
+			}).ToArray();
 			UnturnedChat.Say(caller, string.Format("Available SkillSets : {0}", string.Join(", ", skillSetNames)));
 		}
 
-		void SetSkillSet(IRocketPlayer caller, string skillSetName, SWITCH swt)
+		void SetSkillSet(IRocketPlayer caller, string skillSetName)
 		{
 			SkillSet skillSet = SkillsUtils.FindSkillSetByName(skillSetName);
-			if (skillSet == null && swt != SWITCH.OFF)
+			if (skillSet == null)
 			{
 				UnturnedChat.Say(caller, string.Format("Unknown SkillSet \"{0}\"", skillSetName));
 				return;
 			}
 
-			if (!IsPermitted(caller, skillSet, swt))
+			if (!IsPermitted(caller, skillSet))
 			{
 				CommandUtils.PermissionMissing(caller);
 				return;
 			}
-
-			if (swt != SWITCH.OFF)
-			{
-				SkillsUtils.SetSkills((UnturnedPlayer)caller, skillSetName);
-				UnturnedChat.Say(caller, AutoSkillPlugin.Instance.Translate("SETMAXSKILL_DONE"));
-			}
-			if (swt != SWITCH.NULL)
-			{
-				bool isOn = swt == SWITCH.ON;
-				bool saved = AutoSkillPlugin.Instance.GetStorage().Save(((UnturnedPlayer)caller).CSteamID, skillSetName, isOn);
-				if (saved)
-				{
-					UnturnedChat.Say(caller, AutoSkillPlugin.Instance.Translate(string.Format("SETAUTOSKILL_{0}", isOn? "ON" : "OFF")));
-				}
-
-			}
+			SkillsUtils.SetSkills((UnturnedPlayer)caller, skillSetName);
+			bool saved = AutoSkillPlugin.Instance.GetStorage().Save(((UnturnedPlayer)caller).CSteamID, skillSetName);
+			UnturnedChat.Say(caller, AutoSkillPlugin.Instance.Translate("SETMAXSKILL_DONE"));
 		}
 
-		bool IsPermitted(IRocketPlayer caller, SkillSet skillSet, SWITCH swt)
+		bool IsPermitted(IRocketPlayer caller, SkillSet skillSet)
 		{
 			if (caller.IsAdmin) return true;
-			if (skillSet != null && !SkillsUtils.CanUseSkillSet((UnturnedPlayer)caller, skillSet)) return false;
-
-			if (swt == SWITCH.NULL && caller.HasPermission("skills.set")) return true;
-			if (caller.HasPermission(string.Format("skills.{0}", swt == SWITCH.ON ? "on" : "off"))) return true;
+			if (skillSet != null && PermissionUtils.IsPermitted(caller, skillSet)) return true;
 			return false;
 		}
 

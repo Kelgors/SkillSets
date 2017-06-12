@@ -22,8 +22,14 @@ namespace AutoSkill
 		/// <returns>Saved or not</returns>
 		/// <param name="steamId">Steam identifier.</param>
 		/// <param name="skillSetName">The name of the SkillSet</param>
-		/// <param name="enabled"></param>
-        bool Save(CSteamID steamId, string skillSetName, bool enabled);
+        bool Save(CSteamID steamId, string skillSetName);
+
+		/// <summary>
+		/// Remove the specified steamId.
+		/// </summary>
+		/// <returns>removed or not</returns>
+		/// <param name="steamId">Steam identifier.</param>
+		bool Remove(CSteamID steamId);
 
 		/// <summary>
 		/// Save Periodically the storage.

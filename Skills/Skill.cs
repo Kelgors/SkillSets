@@ -15,6 +15,15 @@ namespace AutoSkill
 		public readonly UnturnedSkill USkill;
 		public readonly byte Level;
 
+		public byte MaxLevel
+		{
+			get
+			{
+				if (USkill == null || !SkillsUtils.MaxSkillsLevel.ContainsKey(USkill)) return 0;
+				return SkillsUtils.MaxSkillsLevel[USkill];
+			}
+		}
+
 		internal Skill(UnturnedSkill skill, byte level)
 		{
 			USkill = skill;

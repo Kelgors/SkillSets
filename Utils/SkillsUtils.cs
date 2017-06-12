@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
+using Rocket.API;
 using Rocket.Core;
 using Rocket.Core.Logging;
 using Rocket.Unturned.Player;
@@ -12,10 +13,31 @@ namespace AutoSkill.Utils
 	public static class SkillsUtils
 	{
 
-		public static void SetSkills(UnturnedPlayer player)
+		public static readonly Dictionary<UnturnedSkill, byte> MaxSkillsLevel = new Dictionary<UnturnedSkill, byte>()
 		{
-            SetSkills(player, FindSkillSetForPlayer(player));
-		}
+			{ UnturnedSkill.Agriculture, 7 },
+			{ UnturnedSkill.Cardio, 5 },
+			{ UnturnedSkill.Cooking, 3 },
+			{ UnturnedSkill.Crafting, 3 },
+			{ UnturnedSkill.Dexerity, 5 },
+			{ UnturnedSkill.Diving, 5 },
+			{ UnturnedSkill.Engineer, 3 },
+			{ UnturnedSkill.Exercise, 5 },
+			{ UnturnedSkill.Fishing, 5 },
+			{ UnturnedSkill.Healing, 7 },
+			{ UnturnedSkill.Immunity, 5 },
+			{ UnturnedSkill.Mechanic, 5 },
+			{ UnturnedSkill.Outdoors, 5 },
+			{ UnturnedSkill.Overkill, 7 },
+			{ UnturnedSkill.Parkour, 5 },
+			{ UnturnedSkill.Sharpshooter, 7 },
+			{ UnturnedSkill.Sneakybeaky, 7 },
+			{ UnturnedSkill.Strength, 5 },
+			{ UnturnedSkill.Survival, 5 },
+			{ UnturnedSkill.Toughness, 5 },
+			{ UnturnedSkill.Vitality, 5 },
+			{ UnturnedSkill.Warmblooded, 5 }
+		};
 
 		public static void SetSkills(UnturnedPlayer player, string skillSetName)
 		{
@@ -24,7 +46,7 @@ namespace AutoSkill.Utils
 
 		public static void SetSkills(UnturnedPlayer player, SkillSet skillSet)
 		{
-			if (skillSet == null || !CanUseSkillSet(player, skillSet)) return;
+			if (skillSet == null || !PermissionUtils.IsPermitted(player, skillSet)) return;
 
 			List<Skill> skills = skillSet.Skills;
 			UnturnedSkill[] allSkills = GetAllUnturnedSkills();
@@ -41,12 +63,6 @@ namespace AutoSkill.Utils
 				}
 
 			}
-		}
-
-		public static bool CanUseSkillSet(UnturnedPlayer player, SkillSet skillSet)
-		{
-			if (skillSet.PermissionGroup == null) return true;
-			return R.Permissions.GetGroups(player, true).Count((group) => group.Id == skillSet.PermissionGroup.Id) > 0;
 		}
 
 		public static UnturnedSkill GetSkillByName(string skillName) 
@@ -73,47 +89,31 @@ namespace AutoSkill.Utils
 			return AutoSkillPlugin.Instance.SkillSets.Find((skillSet) => skillSet.Name == name);
 		}
 
-		public static List<SkillSet> FindSkillSetsForPlayer(UnturnedPlayer player)
+		public static List<SkillSet> GetDefaultPermittedSkillSets(IRocketPlayer player)
 		{
-			List<string> groupIds = R.Permissions.GetGroups(player, true).Select((group) => group.Id).ToList();
-			return AutoSkillPlugin.Instance.SkillSets
-								  .Where((_skillSet) => _skillSet.PermissionGroup == null || groupIds.Contains(_skillSet.PermissionGroup.Id))
-								  .OrderBy((_skillSet) => _skillSet.PermissionGroupPriority)
-								  .ToList();
+			return GetPermittedSkillSets(player).Where((SkillSet skillset) => skillset.IsDefault).ToList();
 		}
 
-		public static SkillSet FindSkillSetForPlayer(UnturnedPlayer player) 
+		public static SkillSet GetHigherSkillSet(List<SkillSet> skillsets)
 		{
-			return FindSkillSetsForPlayer(player).Last();
+			return skillsets.OrderByDescending((SkillSet skillset) => skillset.GetScore()).FirstOrDefault();
 		}
 
+		public static List<SkillSet> GetPermittedSkillSets(IRocketPlayer player) 
+		{
+			return AutoSkillPlugin.Instance.SkillSets.Where((SkillSet skillset) =>
+			{
+				return PermissionUtils.IsPermitted(player, skillset);
+			}).ToList();
+		}
+
+		/// <summary>
+		/// Gets all unturned skills.
+		/// </summary>
+		/// <returns>All unturned skills.</returns>
 		public static UnturnedSkill[] GetAllUnturnedSkills()
 		{
-			return new UnturnedSkill[] 
-			{
-				UnturnedSkill.Agriculture,
-				UnturnedSkill.Cardio,
-				UnturnedSkill.Cooking,
-				UnturnedSkill.Crafting,
-				UnturnedSkill.Dexerity,
-				UnturnedSkill.Diving,
-				UnturnedSkill.Engineer,
-				UnturnedSkill.Exercise,
-				UnturnedSkill.Fishing,
-				UnturnedSkill.Healing,
-				UnturnedSkill.Immunity,
-				UnturnedSkill.Mechanic,
-				UnturnedSkill.Outdoors,
-				UnturnedSkill.Overkill,
-				UnturnedSkill.Parkour,
-				UnturnedSkill.Sharpshooter,
-				UnturnedSkill.Sneakybeaky,
-				UnturnedSkill.Strength,
-				UnturnedSkill.Survival,
-				UnturnedSkill.Toughness,
-				UnturnedSkill.Vitality,
-				UnturnedSkill.Warmblooded
-			};
+			return MaxSkillsLevel.Keys.ToArray();
 		}
 
 	}
