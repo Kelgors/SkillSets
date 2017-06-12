@@ -28,28 +28,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Rocket.API">
-      <HintPath>H:\Rocket\Rocket\Modules\Rocket.Unturned\Rocket.API.dll</HintPath>
-    </Reference>
-    <Reference Include="Rocket.Core">
-      <HintPath>H:\Rocket\Rocket\Modules\Rocket.Unturned\Rocket.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Rocket.Unturned">
-      <HintPath>H:\Rocket\Rocket\Modules\Rocket.Unturned\Rocket.Unturned.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>H:\Games\steamapps\common\Unturned\Unturned_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>H:\Games\steamapps\common\Unturned\Unturned_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>H:\Games\steamapps\common\Unturned\Unturned_Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data">
       <HintPath>Libraries\System.Data.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="Rocket.API">
+      <HintPath>lib\Rocket.API.dll</HintPath>
+    </Reference>
+    <Reference Include="Rocket.Core">
+      <HintPath>lib\Rocket.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Rocket.Unturned">
+      <HintPath>lib\Rocket.Unturned.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>lib\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>lib\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>lib\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,10 +68,17 @@
   <ItemGroup>
     <None Include="README.md" />
     <None Include=".gitignore" />
+    <None Include="lib\Rocket.API.dll" />
+    <None Include="lib\Rocket.Core.dll" />
+    <None Include="lib\Rocket.Unturned.dll" />
+    <None Include="lib\UnityEngine.dll" />
+    <None Include="lib\Assembly-CSharp.dll" />
+    <None Include="lib\Assembly-CSharp-firstpass.dll" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Skills\" />
     <Folder Include="Serialization\" />
+    <Folder Include="lib\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
