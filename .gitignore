@@ -1,4 +1,4 @@
 ﻿bin/Debug
 bin/Release/*.dll
 obj/
-!bin/Release/AutoSkill.dll
+!bin/Release/SkillSets.dll
