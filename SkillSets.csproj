@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>SkillSets</RootNamespace>
     <AssemblyName>SkillSets</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +44,9 @@
     <Reference Include="UnityEngine">
       <HintPath>lib\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>lib\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>lib\Assembly-CSharp.dll</HintPath>
     </Reference>
@@ -72,6 +75,7 @@
     <None Include="lib\Rocket.Core.dll" />
     <None Include="lib\Rocket.Unturned.dll" />
     <None Include="lib\UnityEngine.dll" />
+    <None Include="lib\UnityEngine.CoreModule.dll" />
     <None Include="lib\Assembly-CSharp.dll" />
     <None Include="lib\Assembly-CSharp-firstpass.dll" />
     <None Include="README.html" />
